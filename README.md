@@ -1,6 +1,6 @@
 # ChatPDF SaaS
 
-ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you to interact with PDF documents like never before. This application integrates a blend of technologies, including Next.js for frontend development, the Weaviate vector database for managing document data, and Langchain for advanced natural language processing capabilities. To top it off, we've incorporated OpenAI's GPT-3.5 architecture to enhance your PDF interactions with AI-powered chat capabilities.
+ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you to interact with PDF documents like never before. This application integrates a blend of technologies, including Next.js for full-stack development, the Weaviate vector database for managing document data, and Langchain for advanced natural language processing capabilities. To top it off, we've incorporated OpenAI's GPT-3.5 architecture to enhance your PDF interactions with AI-powered chat capabilities.
 
 ## Features
 
