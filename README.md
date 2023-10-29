@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ChatPDF SaaS
+
+ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you to interact with PDF documents like never before. This application integrates a blend of technologies, including Next.js for frontend development, the Weaviate vector database for managing document data, and Langchain for advanced natural language processing capabilities. To top it off, we've incorporated OpenAI's GPT-3.5 architecture to enhance your PDF interactions with AI-powered chat capabilities.
+
+## Features
+
+- **Conversational PDF:** Chat directly with your PDF documents as if you're chatting with a human. Ask questions, seek information, or even summarize content in a conversational format.
+
+- **Document Management:** Upload, organize, and access your PDF files with ease. ChatPDF integrates with Weaviate, a vector database that offers powerful data management capabilities.
+
+- **Natural Language Understanding:** Langchain, our NLP (Natural Language Processing) component, provides advanced language understanding for meaningful interactions with your documents.
+
+- **AI Assistance:** Our application is powered by OpenAI's GPT-3.5, enabling AI-driven document comprehension and responses.
 
 ## Getting Started
 
-First, run the development server:
+1. **Installation**: To get started, you need Node.js and PostgreSQL installed. Clone the repository and install the required dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   git clone https://github.com/your-repo/ChatPDF.git
+   cd ChatPDF
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Database Setup**: Set up your PostgreSQL database and update the database configuration in your project.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Weaviate Integration**: Weaviate is used for vector database capabilities. Integrate your Weaviate instance and configure it to work with ChatPDF.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. **API Keys**: Obtain API keys for OpenAI's GPT-3.5 and Langchain, and add them to your application configuration.
 
-## Learn More
+5. **Start the Application**: Launch the ChatPDF application:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+6. **Explore and Chat**: Open your browser and navigate to `http://localhost:3000` to start exploring your PDFs and initiate conversational interactions.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. **Document Upload**: Upload your PDF documents to the ChatPDF platform. The documents will be indexed and stored in Weaviate for efficient data management.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Conversational Chat**: Select a document and start a chat session. Ask questions or give commands related to the document's content.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. **Document Summarization**: Request document summaries, and ChatPDF will provide concise, AI-generated summaries.
+
+4. **Language Understanding**: Leverage Langchain's NLP capabilities to improve chat interactions and user experiences.

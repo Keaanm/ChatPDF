@@ -1,0 +1,276 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "id": "aae1ad48-3b8a-4d83-a72c-7fcf4d2dd896",
+  "prevId": "6c834f3d-a88f-4a15-ab4d-2355a52eb9b2",
+  "tables": {
+    "file": {
+      "name": "file",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uploadStatus": {
+          "name": "uploadStatus",
+          "type": "uploadStatus",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'PENDING'"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createAt": {
+          "name": "createAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "file_userId_users_user_id_fk": {
+          "name": "file_userId_users_user_id_fk",
+          "tableFrom": "file",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "message": {
+      "name": "message",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isUserMessage": {
+          "name": "isUserMessage",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fileId": {
+          "name": "fileId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createAt": {
+          "name": "createAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "streamId": {
+          "name": "streamId",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "message_fileId_file_id_fk": {
+          "name": "message_fileId_file_id_fk",
+          "tableFrom": "message",
+          "tableTo": "file",
+          "columnsFrom": [
+            "fileId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "message_userId_users_user_id_fk": {
+          "name": "message_userId_users_user_id_fk",
+          "tableFrom": "message",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stripe customer id": {
+          "name": "stripe customer id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stripe subscription id": {
+          "name": "stripe subscription id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stripe price id": {
+          "name": "stripe price id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stripe product id": {
+          "name": "stripe product id",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_user_id_unique": {
+          "name": "users_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id"
+          ]
+        },
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        },
+        "users_stripe customer id_unique": {
+          "name": "users_stripe customer id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "stripe customer id"
+          ]
+        },
+        "users_stripe subscription id_unique": {
+          "name": "users_stripe subscription id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "stripe subscription id"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {
+    "uploadStatus": {
+      "name": "uploadStatus",
+      "values": {
+        "PENDING": "PENDING",
+        "PROCESSING": "PROCESSING",
+        "FAILED": "FAILED",
+        "SUCCESS": "SUCCESS"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
