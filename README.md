@@ -1,10 +1,10 @@
 # ChatPDF SaaS
 
-ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you to interact with PDF documents like never before. With a powerful tech stack at its core, this full-stack application combines the best of Next.js, Weaviate, Neon, Clerk, and OpenAI to provide an intelligent and user-friendly PDF experience.
+ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you to interact with PDF documents like never before. With a powerful tech stack at its core, this full-stack application combines the best of Next.js, Weaviate, Neon, Clerk, and OpenAI to provide an intelligent and user-friendly PDF experience. Additionally, it integrates seamlessly with Stripe for efficient payment processing.
 
 ## Features
 
-- **Conversational PDF Interaction**: Chat with your PDF documents as if you were chatting with a knowledgeable assistant. Ask questions, request summaries, and explore your content effortlessly.
+- **Conversational PDF Interaction**: Chat with your PDF documents as if you were chatting with a knowledgeable assistant. Ask questions, explore your content effortlessly, and enjoy intelligent answers powered by OpenAI's LLM (Large Language Model).
 
 - **Vector Database with Weaviate**: Harness the power of Weaviate, a vector database, for seamless document data management. Easily organize and access your PDFs.
 
@@ -12,15 +12,15 @@ ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you t
 
 - **Authentication with Clerk**: Secure your account and access with Clerk, offering user-friendly and efficient authentication.
 
-- **OpenAI Language Model**: The application is enriched with OpenAI's cutting-edge LLM (Language Model) for intelligent question-answering and natural language processing.
+- **Stripe Integration**: Seamlessly process payments, subscriptions, and transactions using Stripe's payment processing capabilities.
 
 ## Getting Started
 
 1. **Installation**: Start by cloning the repository and installing the necessary dependencies:
 
    ```bash
-   git clone https://github.com/your-repo/QAPDFChat.git
-   cd QAPDFChat
+   git clone https://github.com/your-repo/ChatPDF.git
+   cd ChatPDF
    npm install
    ```
 
@@ -30,9 +30,9 @@ ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you t
 
 4. **Clerk Authentication**: Implement Clerk for secure and user-friendly authentication and account management.
 
-5. **OpenAI API Key**: Obtain an API key for OpenAI's LLM and add it to your application configuration.
+5. **Stripe Configuration**: Configure Stripe integration by adding your Stripe API keys and setting up your payment processing logic.
 
-6. **Start Chatting**: Launch your Q&A PDF Chat application:
+6. **Start Chatting**: Launch your ChatPDF application:
 
    ```bash
    npm run dev
@@ -44,9 +44,8 @@ ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you t
 
 1. **Upload PDFs**: Start by uploading your PDF documents to the platform. Weaviate ensures efficient data organization and retrieval.
 
-2. **Chat with Your PDFs**: Select a PDF, initiate a chat session, and engage in natural language interactions. Pose questions, seek explanations, and request summaries.
+2. **Chat with Your PDFs**: Select a PDF, initiate a chat session, and engage in natural language interactions. Pose questions and seek explanations to discover insights from your documents.
 
 3. **Secure Access**: Clerk handles authentication, ensuring a secure and user-friendly experience.
 
-4. **Intelligent Answers**: The OpenAI LLM enhances your interactions by providing intelligent answers and understanding your natural language queries.
-
+4. **Efficient Payments**: Leverage Stripe's payment processing capabilities to seamlessly handle payments, subscriptions, and transactions within your application.
