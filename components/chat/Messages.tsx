@@ -1,7 +1,5 @@
 "use client"
 
-import { getFileMessages } from '@/lib/actions/file.actions'
-import { INFINITE_QUERY_LIMIT } from '@/lib/infinite-query'
 import { Loader2, MessageSquare } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { useInfiniteQuery } from '@tanstack/react-query'
@@ -18,9 +16,12 @@ const Messages = ({fileId}: MessagesProps) => {
 
   const {isLoading: isAiThinking} = useContext(ChatContext)
 
-const fetchMessages = async ({pageParam = 0}) => {
-   return await getFileMessages(fileId, pageParam, INFINITE_QUERY_LIMIT)
-}
+  const fetchMessages = async ({pageParam = 0}) => {
+      const res = await fetch(`/api/files/${fileId}/messages?cursor=${pageParam}`)
+      if(!res.ok) throw new Error('Network response was not ok');
+      const messages = await res.json()
+      return messages;
+  }
 
   const {data, isLoading, fetchNextPage} = useInfiniteQuery({
     queryKey: ['messages', fileId],
@@ -28,9 +29,7 @@ const fetchMessages = async ({pageParam = 0}) => {
     getNextPageParam: (lastPage) => lastPage?.nextCursor,
     keepPreviousData: true,
   })
-
-
-  const messages = data?.pages.flatMap((page) => page?.messages)
+  const messages = data?.pages?.flatMap((page) => page?.messages)
 
   const loadingMessage = {
     createdAt: new Date(),

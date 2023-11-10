@@ -15,6 +15,7 @@ import {zodResolver} from '@hookform/resolvers/zod'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import SimpleBar from 'simplebar-react';
 import PdfFullScreen from "./PdfFullScreen";
+import { cn } from "@/lib/utils";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
@@ -22,7 +23,7 @@ interface PdfRenderProps{
   url: string
 }
 const PdfRenderer = ({url}: PdfRenderProps) => {
-
+  
   const {toast} = useToast();
   const {width, ref} = useResizeDetector()
   const [numPages, setNumPages] = useState<number>()
@@ -154,14 +155,15 @@ const PdfRenderer = ({url}: PdfRenderProps) => {
               }
               onLoadSuccess={({numPages}) => setNumPages(numPages)}
               file={url} className="max-h-full">
-               {isLoading && renderedScale ?  <Page 
-                width={width ? width : 1} 
+               {isLoading && renderedScale ? 
+               <Page 
+                width={width ? width : 1}
                 pageNumber={currPage} 
                 scale={scale} 
                 key={"@" + renderedScale}
                 rotate={rotation}/>: null}
                 <Page 
-                className={isLoading ? 'hidden' : ''}
+                className={cn(isLoading ? 'hidden' : '')}
                 width={width ? width : 1} 
                 pageNumber={currPage} 
                 scale={scale} 

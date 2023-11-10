@@ -8,7 +8,6 @@ import { Progress } from './ui/progress'
 import { useUploadThing } from '@/lib/uploadthing'
 import { useToast } from './ui/use-toast'
 import { useRouter } from 'next/navigation'
-import { getFile } from '@/lib/actions/file.actions'
 import { useMutation } from '@tanstack/react-query'
 
 const UploadDropZone = ({isSubscribed}: {isSubscribed: boolean}) => {
@@ -20,12 +19,22 @@ const UploadDropZone = ({isSubscribed}: {isSubscribed: boolean}) => {
     )
     const {toast} = useToast()
     const router = useRouter()
-
+    
+    async function getFile(key: string) {
+        const res = await fetch(`/api/files/upload/${key}`);
+        if(!res.ok){
+            throw new Error('Network response was not ok')
+        }
+        return res.json()
+    }
     const mutation = useMutation({
         mutationKey: ['file'],
         mutationFn: (key: string) => getFile(key),
         onSuccess: (file) => {
-            router.push(`/dashboard/${file!.id}`);
+            router.push(`/dashboard/${file.id}`);
+        },
+        onSettled: () => {
+            router.refresh();
         },
         retry: true,
         retryDelay: 500,
@@ -79,7 +88,7 @@ const UploadDropZone = ({isSubscribed}: {isSubscribed: boolean}) => {
         
         mutation.mutate(key)
 
-        console.log("file from the client: " + mutation.data)
+        
 
     }}>
         {({getRootProps, getInputProps, acceptedFiles}) => (

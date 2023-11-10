@@ -2,7 +2,7 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { db } from '@/drizzle'
-import { users } from '@/lib/models/user.model'
+import { users } from '@/lib/models/schema'
 
     interface UserInfo{
         id: string;
@@ -90,7 +90,7 @@ import { users } from '@/lib/models/user.model'
     }
 
  
-    return new Response('', { status: 201 })
+    return new Response('Success', { status: 201 })
 }
 export const GET = handler;
 export const POST = handler;

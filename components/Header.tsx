@@ -1,9 +1,10 @@
+
 import Link from "next/link"
-import { auth } from '@clerk/nextjs';
+import { RedirectToSignIn, auth, useClerk } from '@clerk/nextjs';
 import UserButton1 from "./UserButton";
-import { fetchUser } from "@/lib/actions/user.actions";
 import { getUserSubscriptionPlan } from "@/lib/stripe";
 import MobileNav from "./MobileNav";
+
 const Header = async () => {
   const { userId } = auth()
   const subscriptionPlan = await getUserSubscriptionPlan();
@@ -19,8 +20,7 @@ const Header = async () => {
             </div> :
             <div className="ml-auto space-x-5 flex items-center justify-between">
               <Link href={subscriptionPlan.isSubscribed ? "/dashboard/billing" : "/pricing"}>{subscriptionPlan.isSubscribed ? "Manage Subscription" : "Pricing"}</Link>
-              <UserButton1
-              />
+              <UserButton1 />
             </div>
             }
         </div>

@@ -1,6 +1,4 @@
 import {integer,timestamp, serial, text, pgTable, pgEnum, boolean, varchar} from "drizzle-orm/pg-core";
-import { NeonDatabase } from "drizzle-orm/neon-serverless";
-import { drizzle } from "drizzle-orm/better-sqlite3";
 import { relations } from 'drizzle-orm';
 
 export const users = pgTable('users', {

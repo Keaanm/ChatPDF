@@ -4,16 +4,24 @@ import { createContext, useRef, useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query'
 
-type Messages = InfiniteData<{
-    messages: {
-        id: number;
-        createAt: Date;
-        text: string;
-        isUserMessage: boolean;
-        streamId: string | null;
-    }[]
-    nextCursor: number;
-  } | undefined> | undefined;
+type Messages = { pages: 
+    ({ messages: ({ 
+        id: number; 
+        createAt: Date; 
+        text: string; 
+        isUserMessage: boolean; 
+        streamId: string | null; 
+    } | 
+    { id: number; 
+        createdAt: 
+        Date; text: 
+        string; 
+        isUserMessage: 
+        boolean; 
+        streamId: string; })[] | 
+        undefined; nextCursor?: number | 
+        undefined; })[]; pageParams: unknown[]; 
+    }
 
 type StreamResponse = {
     addMessage: () => void
@@ -44,10 +52,9 @@ export const ChatContextProvider = ({fileId, children}: Props) => {
     
     const {mutate: sendMessage} = useMutation({
         mutationFn: async ({message}: {message: string}) => {
-            const response = await fetch('/api/message', {
+            const response = await fetch(`/api/files/${fileId}/message`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    fileId,
                     message
                 })
             })
@@ -87,7 +94,7 @@ export const ChatContextProvider = ({fileId, children}: Props) => {
                         createAt: new Date(),
                         streamId: null,
                      },
-                     ...latestPage.messages
+                     ...latestPage.messages || []
                 ]
                 
                 newPages[0] = latestPage;
@@ -129,7 +136,6 @@ export const ChatContextProvider = ({fileId, children}: Props) => {
                 const chunkValue = decoder.decode(value);
 
                 accResponse += chunkValue;
-                console.log(accResponse)
 
                 //append the chucnk to the message
                 utils.setQueryData<Messages>(
@@ -143,35 +149,37 @@ export const ChatContextProvider = ({fileId, children}: Props) => {
                         }
 
                         let isAiResponseCreate = old.pages.some(
-                            (page) => page?.messages.some((message) => message.streamId === 'ai-response')
+                            (page) => page?.messages?.some((message) => message.streamId === 'ai-response')
                             )
                             let updatedPages = old.pages.map((page) => {
                                 if(page === old.pages[0]){
                                     let updatedMessages
 
-                                    if(!isAiResponseCreate){
-                                        updatedMessages = [
-                                            {
-                                                id: Math.random(),
-                                                createdAt: new Date(),
-                                                text: accResponse,
-                                                isUserMessage: false,
-                                                streamId: 'ai-response',
-                                            },
-                                            ...page!.messages
-                                        ]
-                                    }
-                                    else{
-                                        updatedMessages = page?.messages.map((message) => {
-                                            if(message.streamId === 'ai-response'){
-                                                return {
-                                                    ...message,
-                                                    text: accResponse
+                                    if(page?.messages){
+                                        if(!isAiResponseCreate){
+                                            updatedMessages = [
+                                                {
+                                                    id: Math.random(),
+                                                    createdAt: new Date(),
+                                                    text: accResponse,
+                                                    isUserMessage: false,
+                                                    streamId: 'ai-response',
+                                                },
+                                                ...page.messages
+                                            ]
+                                        }
+                                        else{
+                                            updatedMessages = page?.messages?.map((message) => {
+                                                if(message.streamId === 'ai-response'){
+                                                    return {
+                                                        ...message,
+                                                        text: accResponse
+                                                    }
                                                 }
-                                            }
-                                            return message;
-                                        })
-                                    }
+                                                return message;
+                                            })
+                                        }
+                                }
 
                                     return {
                                         ...page,

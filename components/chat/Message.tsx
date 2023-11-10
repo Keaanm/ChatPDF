@@ -11,7 +11,7 @@ interface MessageProps {
     }
 
 const Message = forwardRef<HTMLDivElement, MessageProps>(({message, isNextMessageSamePerson}, ref) => {
-    console.log(message.createAt)
+    
   return (
     <div ref={ref} className={`flex items-end ${message.isUserMessage ? 'justify-end' : ''}`}>
         <div className={`relative flex h-6 w-6 aspect-square items-center justify-center 

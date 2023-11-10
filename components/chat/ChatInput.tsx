@@ -1,11 +1,10 @@
 "use client"
 
-import React, { useContext, useRef } from 'react'
+import { useContext, useRef } from 'react'
 import { Textarea } from '../ui/textarea'
 import { Send } from 'lucide-react'
 import { Button } from '../ui/button'
 import { ChatContext } from './ChatContext'
-import { text } from 'stream/consumers'
 
 interface ChatInputProps {
     isDisabled?: boolean

@@ -1,13 +1,10 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { currentUser } from "@clerk/nextjs"; 
 import { db } from "@/drizzle";
-import {files, File} from "@/lib/models/schema";
-import { revalidatePath } from "next/cache";
+import {files} from "@/lib/models/schema";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import {pinecone} from "@/lib/pinecone";
 import {OpenAIEmbeddings} from "langchain/embeddings/openai";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
-import { eq, and } from 'drizzle-orm';
+import { eq} from 'drizzle-orm';
 import { client } from "@/lib/weaviate";
 import { WeaviateStore } from "langchain/vectorstores/weaviate";
 import { getUserSubscriptionPlan } from "@/lib/stripe";
@@ -45,7 +42,8 @@ const middleware = async () => {
     console.log("file url", file.url);
 
     const isFileExist = await db.select().from(files).where(eq(files.key, file.key));
-    if (isFileExist) return
+    
+    if (isFileExist.length > 0) return
 
     const [createdFile] = await db.insert(files).values({
       name: file.name,
@@ -55,16 +53,16 @@ const middleware = async () => {
       createAt: new Date(),
       uploadStatus: 'PROCESSING'
     }).returning();
-  
-    revalidatePath('/dashboard');
+    console.log("Created file", createdFile);
     
     try{
     const response = await fetch(`https://uploadthing-prod.s3.amazonaws.com/${file.key}`);
+    
     const blob = await response.blob();
-
+    console.log("blob", blob);
     const loader = new PDFLoader(blob);
     const pageLevelDocs = await loader.load();
-
+    ;
     const pagesAmt = pageLevelDocs.length;
 
     const {subscriptionPlan} = metadata;
@@ -77,23 +75,21 @@ const middleware = async () => {
       await db.update(files).set({uploadStatus: "FAILED"}).where(eq(files.id, createdFile.id));
     }
 
-    const pineconeIndex = pinecone.Index("chatpdf")
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY!,
     });
 
-    await PineconeStore.fromDocuments(pageLevelDocs, embeddings, 
-      {
-      pineconeIndex,
-    });
-
-    //try to migrate to weaviate
+    let tenants = await client.schema
+    .tenantsCreator('ChatpdfV11', [{ name: `Chatpdf${createdFile.id}` }])
+    .do();
+    console.log(JSON.stringify(tenants, null, 2));
 
     await WeaviateStore.fromDocuments(pageLevelDocs, embeddings, {
       client,
-      indexName: `Chatpdf${createdFile.id}`,
-      textKey: 'test',
-    })
+      indexName: "ChatpdfV11",
+      textKey: "text",
+      tenant: `Chatpdf${createdFile.id}`
+    });
 
     await db.update(files).set({uploadStatus: "SUCCESS"}).where(eq(files.id, createdFile.id));
 

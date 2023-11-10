@@ -3,9 +3,7 @@ import UploadButton from './UploadButton'
 import { getUserFiles } from '@/lib/actions/file.actions'
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
-import Skeleton from "react-loading-skeleton";
 import Files from './Files'
-import Loading from '@/app/(root)/dashboard/loading'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 
 const Dashboard = async () => {
@@ -20,10 +18,7 @@ const Dashboard = async () => {
 
             <UploadButton isSubscribed={subscriptionPlan.isSubscribed}/>
         </div>
-
-        <Suspense fallback={<Loading/>}>
             <Files files={files}/>
-        </Suspense>
     </main>
   )
 }

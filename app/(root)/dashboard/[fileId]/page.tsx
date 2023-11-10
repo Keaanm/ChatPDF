@@ -1,9 +1,9 @@
 import {notFound, redirect} from 'next/navigation'
 import { auth } from '@clerk/nextjs';
-import { getUserFile, getFile } from '@/lib/actions/file.actions';
+import { getUserFile} from '@/lib/actions/file.actions';
 import ChatWrapper from '@/components/chat/ChatWrapper';
 import PdfRenderer from '@/components/PdfRenderer';
-import {File} from '@/lib//models/schema';
+import { getUserSubscriptionPlan } from '@/lib/stripe';
 
 interface PageProps {
     params: {
@@ -17,8 +17,8 @@ const page = async ({params}: PageProps) => {
     const {fileId} = params;
     const file = await getUserFile(fileId)
     if(!file) notFound();
-
-
+    
+    const plan = await getUserSubscriptionPlan()
     return (
         <div className='flex-1 justify-between flex flex-col h-[calc(100vh-3.5rem)]'>
             <div className='mx-auto w-full grow lg:flex xl:px-2'>
@@ -31,6 +31,7 @@ const page = async ({params}: PageProps) => {
                 <div className='shrink-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0'>
                     <ChatWrapper
                     fileId={fileId}
+                    isSubscribed={plan.isSubscribed}
                     />
                 </div>
             </div>

@@ -1,13 +1,13 @@
-import React from 'react'
-import { SignOutButton, UserButton } from '@clerk/nextjs'
-import { currentUser } from '@clerk/nextjs'
 import Dashboard from '@/components/Dashboard'
-const page = async () => {
-  const user = await currentUser()
-  console.log(user?.id)
+import { Suspense } from 'react'
+import Skeleton from "react-loading-skeleton";
+const Page = () => {
+  
   return (
-    <Dashboard/>
+    <Suspense fallback={<Skeleton height={100} className='my-2' count={3}/>}>
+      <Dashboard/>
+    </Suspense>
   )
 }
 
-export default page
+export default Page

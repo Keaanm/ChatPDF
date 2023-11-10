@@ -17,10 +17,6 @@ export async function GET(){
     // const billingURL = absoluteUrl("/dashboard/billing");
     const billingURL = "http://localhost:3000/dashboard/billing"
 
-//    const dbUser = await db.query.users.findFirst({
-//         where: eq(users.user_id, userId)
-//     });
-
     const Users = await db.select().from(users).where(eq(users.user_id, userId)).limit(1);
     const dbUser = Users[0];
     

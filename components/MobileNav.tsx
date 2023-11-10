@@ -1,6 +1,5 @@
 "use client"
 
-import { SignOutButton, SignedOut } from "@clerk/nextjs";
 import { ArrowRight, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,7 +29,7 @@ const MobileNav = ({userId}: MobileNavProps) => {
     }, [pathname]);
 
     const closeOnCurrent = (href: string) => {
-        console.log(pathname, href)
+        
         if(pathname === href) {
             toggleMenu()
         }
@@ -87,6 +86,16 @@ const MobileNav = ({userId}: MobileNavProps) => {
                                     onClick={() => closeOnCurrent("/dashboard")}
                                     >
                                         Dashboard
+                                    </Link>
+                                </li>
+                                <li className="my-3 h-px w-full bg-gray-300"/>
+                                <li>
+                                    <Link 
+                                    className="flex items-center w-full font-semibold" 
+                                    href="/user-profile"
+                                    onClick={() => closeOnCurrent("/user-profile")}
+                                    >
+                                        Settings
                                     </Link>
                                 </li>
                                 <li className="my-3 h-px w-full bg-gray-300"/>

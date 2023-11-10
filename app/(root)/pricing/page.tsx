@@ -1,14 +1,10 @@
 import UpgradeButton from '@/components/UpgradeButton';
 import { buttonVariants } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { db } from '@/drizzle';
-import { users } from '@/lib/models/schema';
-import { eq } from 'drizzle-orm'
 import { PLANS } from '@/lib/config/stripe';
 import { auth } from '@clerk/nextjs';
 import { ArrowRight, Check, HelpCircle, Minus } from 'lucide-react';
 import Link from 'next/link';
-import { fetchUser } from '@/lib/actions/user.actions';
 
 const Page = () => {
 

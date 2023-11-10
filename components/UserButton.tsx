@@ -1,11 +1,17 @@
 "use client"
-import { UserButton } from "@clerk/clerk-react"
+
+import { useClerk } from "@clerk/nextjs";
+import Link from "next/link";
+import {useRouter} from "next/navigation"
 
 const UserButton1 = () => {
+  const router = useRouter()
+  const {signOut} = useClerk()
   return (
-    <UserButton
-    afterSignOutUrl="/"
-    />
+    <>
+    <Link href="user-profile">Settings</Link>
+    <button onClick={() => signOut(() => router.push("/"))}>Sign Out</button>
+    </>
   )
 }
 

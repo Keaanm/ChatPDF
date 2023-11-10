@@ -1,19 +1,16 @@
 import { auth } from "@clerk/nextjs";
 import { NextRequest } from "next/server"
-import { SendMessageValidator } from "@/lib/validators/SendMessageValidator";
 import { db } from "@/drizzle";
 import { eq, and, desc } from "drizzle-orm";
 import { files, messages, users } from "@/lib/models/schema";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { pinecone } from "@/lib/pinecone";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { openai } from "@/lib/openai";
 import {OpenAIStream, StreamingTextResponse} from "ai"
 
 import { WeaviateStore } from 'langchain/vectorstores/weaviate';;
-import { client } from '@/lib//weaviate';
+import {client} from '@/lib/weaviate';
 
-export const POST = async(req: NextRequest) => {
+export const POST = async(req: NextRequest, {params}: {params: {id: number}}) => {
     const { userId } = auth();
         if (!userId) {
             return new Response("Unauthorized", { status: 401 });
@@ -21,12 +18,11 @@ export const POST = async(req: NextRequest) => {
 
     const body = await req.json()
 
-    //const { fileId, message} = SendMessageValidator.parse(body);
-    const {fileId, message} = body;
+    const {message} = body;
 
     const file = await db.query.files.findFirst({
         where: (and(
-            eq(files.id, fileId), eq(files.userId, userId)
+            eq(files.id, params.id), eq(files.userId, userId)
         )) 
     });
 
@@ -38,7 +34,7 @@ export const POST = async(req: NextRequest) => {
         text: message,
         isUserMessage: true,
         userId: userId,
-        fileId: fileId,
+        fileId: params.id,
         createAt: new Date()
     })
 
@@ -46,28 +42,15 @@ export const POST = async(req: NextRequest) => {
         openAIApiKey: process.env.OPENAI_API_KEY!,
       });
 
-      //With pinecone
-
-      // const pineconeIndex = pinecone.Index("chatpdf")
-
-      // const vectorStore = await PineconeStore.fromExistingIndex(embeddings,{
-      //   pineconeIndex,
-      // })
-
-      // const results = await vectorStore.similaritySearch(message, 4)
-
-      //try to use weaviate
-
       const vectorStore = await WeaviateStore.fromExistingIndex(embeddings, {
         client,
-        indexName: `Chatpdf${fileId}`,
-        textKey: 'test',
+        indexName: "ChatpdfV11",
+        textKey : "text",
+        tenant: `Chatpdf${file.id}`
       });
 
       const results = await vectorStore.similaritySearch(message, 2);
-      console.log(results);
-
-
+    //   console.log("result of simularity search", results);
 
       const prevMessages = await db.query.messages.findMany({
             where: eq(messages.fileId, file.id),
