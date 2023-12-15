@@ -19,7 +19,7 @@ ChatPDF is a versatile SaaS (Software as a Service) platform that empowers you t
 1. **Installation**: Start by cloning the repository and installing the necessary dependencies:
 
    ```bash
-   git clone https://github.com/your-repo/ChatPDF.git
+   git clone https://github.com/Keaanm/ChatPDF.git
    cd ChatPDF
    npm install
    ```
